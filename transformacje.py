@@ -386,7 +386,70 @@ class Transformacje:
         el=degrees(el)
         
         return(az, el)
+    
+    
+    def menu_wybor(self, n):
+        """
+        Fukcja generująca menu do wyboru transformacji.
+        """
+        znak = True
         
+    
+        if n == "1":
+            print(wspol_krzyw_lin_arr)
+            np.savetxt("wsp_out.txt", wspol_krzyw_lin_arr, delimiter=',', fmt = ['%10.5f', '%10.5f', '%10.3f'], header = f"konwersja wspolrzednych geodezyjnych XYZ --> PLH\n {'fi':<10s}{'la':^10s}{'h':^10s}")
+            
+        elif n == "2":
+            print(xyz_arr2)
+            np.savetxt("wsp_out.txt", xyz_arr2, delimiter=',', fmt = ['%10.5f', '%10.5f', '%10.5f'], header = f"konwersja wspolrzednych geodezyjnych PLH --> XYZ\n {'X':<10s}{'Y':^10s}{'Z':^10s}")
+        
+        elif n == "3":
+            print(XY2000_arr)
+            np.savetxt("wsp_out.txt", XY2000_arr, delimiter=',', fmt = ['%10.5f', '%10.5f'], header = f"konwersja wspolrzednych geodezyjnych XYZ --> XY2000\n {'X':<10s}{'Y':^10s}") 
+       
+        elif n == "4":
+            print(XY1992_arr)
+            np.savetxt("wsp_out.txt", XY1992_arr, delimiter=',', fmt = ['%10.5f', '%10.5f'], header = f"konwersja wspolrzednych geodezyjnych XYZ --> XY1992\n {'X':<10s}{'Y':^10s}")  
+        
+        elif n == "5":
+            print(neu)
+            np.savetxt("wsp_out.txt", neu, delimiter=',', fmt = ['%10.5f', '%10.5f', '%10.3f'], header = f"konwersja wspolrzednych geodezyjnych XYZ --> NEU\n {'N':<10s}{'E':^10s}{'U':^10s}")
+        
+        elif n == "6":
+            print('odległosc 3D\n', odleglosc3D)
+            
+        elif n == "7":
+            print('odległosc 2D\n', odleglosc2D)
+            
+        elif n == "8":
+            print('kąty azymutu\n', Azymuty)
+            print('kąty elewacji\n', Elewacje)
+            
+        elif n == "9":
+            print("""Zakonczono dzialanie programu""")
+            input('')
+            znak = False
+        
+        else:
+            print("""Nie ma takiej opcji""")
+            powrot()
+        return znak
+            
+    def menu_wejscie(self):
+        print ("""==============================
+                MENU             
+    ==============================
+    1. Współrzędne fi,l,h
+    2. Współrzędne X,Y Z
+    3. Współrzędne X,Y 2000
+    4. Współrzędne X,Y 1992
+    5. NEU
+    6. Odległosc 3D
+    7. Odleglosc 2D
+    8. Kąty azymutu i elewacji
+    9. Wyjście     """)
+        return
+            
 if __name__ == "__main__":
     # utworzenie obiektu
     geo = Transformacje(model = "wgs84")
@@ -411,7 +474,7 @@ if __name__ == "__main__":
         wspol_krzyw_lin.append(flh)
         
     wspol_krzyw_lin_arr=np.array(wspol_krzyw_lin)
-    print('xyz --> plh\n', wspol_krzyw_lin_arr)
+    # print('xyz --> plh\n', wspol_krzyw_lin_arr)
     
     #transformacja odwrotna
     xyz2=[]
@@ -420,7 +483,7 @@ if __name__ == "__main__":
         xyz2.append(XYZ)
         
     xyz_arr2=np.array(xyz2)
-    print('plh --> XYZ\n', xyz_arr2)
+    # print('plh --> XYZ\n', xyz_arr2)
     
     #transformacja do ukladu PL-2000
     XY2000=[]
@@ -429,7 +492,7 @@ if __name__ == "__main__":
         XY2000.append(xy2000)
     
     XY2000_arr=np.array(XY2000)
-    print('układ PL-2000\n', XY2000_arr)
+    # print('układ PL-2000\n', XY2000_arr)
     
     #transformacja do ukladu PL-1992
     XY1992=[]
@@ -438,7 +501,7 @@ if __name__ == "__main__":
         XY1992.append(xy1992)
     
     XY1992_arr=np.array(XY1992)
-    print('układ PL-1992\n', XY1992_arr)
+    # print('układ PL-1992\n', XY1992_arr)
     
     #transformacja neu
     listaX=[]
@@ -462,7 +525,7 @@ if __name__ == "__main__":
     [fi_sr,lam_sr,h_sr]=geo.xyz2plh(X_sr, Y_sr, Z_sr)
     R=geo.Rneu(fi_sr,lam_sr)
     neu=geo.delta_neu(R, v)
-    print('NEU\n',neu)
+    # print('NEU\n',neu)
     
     
     #odległosc 3D
@@ -470,8 +533,8 @@ if __name__ == "__main__":
     for i in xyz_arr:
         odl=geo.odl3D(xyz_arr[0,0],xyz_arr[0,1],xyz_arr[0,2],i[0],i[1],i[2])
         odleglosc3D.append(odl)
-
-    print('odległosc 3D\n', odleglosc3D)
+    
+    # print('odległosc 3D\n', odleglosc3D)
     
     #odległosc 2D
     odleglosc2D=[]
@@ -479,7 +542,7 @@ if __name__ == "__main__":
         odl2=geo.odl2D(xyz_arr[0,0], xyz_arr[0,1], i[0], i[1])
         odleglosc2D.append(odl2)
 
-    print('odległosc 2D\n', odleglosc2D)
+    # print('odległosc 2D\n', odleglosc2D)
     
     Azymuty=[]
     Elewacje=[]
@@ -488,5 +551,19 @@ if __name__ == "__main__":
         Azymuty.append(azymut)
         Elewacje.append(elewacja)
 
-    print('kąty azymutu\n', Azymuty)
-    print('kąty elewacji\n', Elewacje)
+    # print('kąty azymutu\n', Azymuty)
+    # print('kąty elewacji\n', Elewacje)
+    
+    #wybór transformacji
+    znak = True
+    
+    while znak == True:
+        
+        geo.menu_wejscie()
+    
+        n = input('Wybierz opcje: ')
+        
+        znak = geo.menu_wybor(n)
+    
+    
+    
